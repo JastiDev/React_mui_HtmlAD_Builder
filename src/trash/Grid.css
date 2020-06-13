@@ -1,0 +1,42 @@
+.wrap
+{
+    width: 160px;
+    height: 120px;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.overlay
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border: 2px solid green;
+    background-color: transparent;
+}
+
+:root {
+    --myscale: 0.25;
+}
+
+.frame
+{
+    width: 1280px;
+    height: 768px;
+    border: 0;
+
+    -ms-transform: scale(var(--myscale));
+    -moz-transform: scale(var(--myscale));
+    -o-transform: scale(var(--myscale));
+    -webkit-transform: scale(var(--myscale));
+    transform: scale(var(--myscale));
+
+    -ms-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+}

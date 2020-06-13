@@ -1,0 +1,16 @@
+v0.9	2019.5.24
+
+1. Google Font picker (500 fonts)
+2. Div Create, Remove, Select Panel changed to show all the divs as a selectable list
+3. idStr issue fixed
+4. Some bugs fixed, code is structured reasonably
+5. body{margin:0} added
+6. custom font checkbox added (custom font not yet)
+7. The Draging panel became much larger so that you can select divs even if they are outside of the base div
+
+=============
+Todo
+1. Custom Font
+
+2. using S3
+
