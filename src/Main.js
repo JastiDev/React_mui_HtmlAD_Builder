@@ -22,6 +22,9 @@ const SERVER_ERR = 3;
 export default function Main() {
   const [serverStatus, setServerStatus] = useState(SERVER_INIT);
 
+  const [arrS3Font, setArrS3Font] = useState([]);
+  const [arrS3Img, setArrS3Img] = useState([]);
+
   const [theData, setTheData] = useState(null);
   const [idTheItem, setIdTheItem] = useState(null);
   const [arrTemplate, setArrTemplate] = useState([]);
@@ -37,6 +40,7 @@ export default function Main() {
   const loadAppData = async () => { 
     try {
       setServerStatus(SERVER_LOADING);
+      readS3();
       setTheData(common.make_the_data());
       setIdTheItem(0);
 
@@ -50,6 +54,43 @@ export default function Main() {
       setServerStatus(SERVER_ERR);
     }
   }
+
+  const readS3 = () => {
+    http.readS3().then(resp => {
+      let arr = resp.data;
+      arr.splice(0, 1);
+
+      let arrS3Font = arr.filter(url => {
+        let ext = url.split(".").pop();
+        return common.Font_Extensions.includes(ext);
+      });
+      console.log(arrS3Font);
+
+      arrS3Font.forEach(url => {
+        let family = common.url2family(url);
+        if (!family || family.length === 0) return;
+        let junction_font = new FontFace(family, `url(${url})`);
+        junction_font
+          .load()
+          .then((loaded_face) => {
+            document.fonts.add(loaded_face);
+          })
+          .catch((err) => console.log(err));
+      });
+      setArrS3Font(arrS3Font);
+
+
+      let arrS3Img = arr.filter(url => {
+        let ext = url.split(".").pop();
+        return common.Img_Extensions.includes(ext);
+      });
+      arrS3Img.unshift("none");
+      setArrS3Img(arrS3Img);
+
+    }).catch(err => {
+      console.log(err);
+    });
+  };
 
   const handleNew = () => {
     if (window.confirm("Create New Template? You will lose your current data if not saved.")) { 
@@ -248,11 +289,13 @@ export default function Main() {
 
         <MyFontPicker isModal={isFontPick} handleToggle={(tf) => { setIsFontPick(tf); }}
           theItem={idTheItem !== null ? theData.arrItem[idTheItem] : null}
-          handleChange={handleChangeTheItem} />
+          handleChange={handleChangeTheItem}
+          arrS3Font={arrS3Font} handleUploadS3={()=>readS3()}/>
 
-        <MyImagePicker isModal={isImgPick} handleToggle={(tf) => { setIsImgPick(tf); }} 
+        <MyImagePicker isModal={isImgPick} handleToggle={(tf) => { setIsImgPick(tf); }}
           theItem={idTheItem !== null ? theData.arrItem[idTheItem] : null}
-          handleChange={handleChangeTheItem} />
+          handleChange={handleChangeTheItem}
+          arrS3Img={arrS3Img} handleUploadS3={()=>readS3()}/>
 
       </div>
 

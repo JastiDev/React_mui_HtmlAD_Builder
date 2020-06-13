@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FontPicker from "font-picker-react";
 import {
   TextField,
@@ -17,22 +17,8 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import * as common from '../common';
 import { MyS3Uploader } from './MyS3Uploader';
 
-const Font_Extensions = ["eot", "ttf", "woff", "woff2", "svg"];
 
-
-
-export const MyFontPicker = ({ isModal, theItem, handleChange, handleToggle }) => {
-  const [arrS3Font, setArrS3Font] = useState([]);
-
-  const handleReadS3 = (arr) => {
-    let arrS3Font = arr.filter(url => {
-      let ext = url.split(".").pop();
-      return Font_Extensions.includes(ext);
-    });
-    console.log(arrS3Font);
-    setArrS3Font(arrS3Font);
-  }
-
+export const MyFontPicker = ({ isModal, theItem, handleChange, handleToggle, arrS3Font, handleUploadS3 }) => {
   const changeStyle = (strkey, value) => {
     if (!theItem) return;
     let tmp = JSON.parse(JSON.stringify(theItem));
@@ -115,47 +101,33 @@ export const MyFontPicker = ({ isModal, theItem, handleChange, handleToggle }) =
           {theItem && theItem.style.useCustomFont &&
             <div style={{marginTop:'10px'}}>
               <strong style={{ fontSize: 'small' }}>Custom Font on S3 Server</strong>
-            <div style={{ height: '200px' }}>
+              <div style={{ height: '200px' }}>
 
-              <Autocomplete
-                size="small"
-                options={arrS3Font}
-                getOptionLabel={(option) => option}
-                disableClearable
-                autoHighlight
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="fontFamily"
-                    variant="outlined"
-                    InputLabelProps={{ shrink: true }}
-                  />
-                )}
-                defaultValue={theItem.style['fontFamily']}
-                onChange={(e, value) => { 
-                  changeStyle('customFontURL', value);
-                }}
-                style={{ marginTop:'20px', display: 'inline-block' }}
-                fullWidth
-              />
-              
-{/* 
+                <Autocomplete
+                  size="small"
+                  options={arrS3Font}
+                  getOptionLabel={(option) => option}
+                  disableClearable
+                  autoHighlight
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="fontFamily"
+                      variant="outlined"
+                      InputLabelProps={{ shrink: true }}
+                    />
+                  )}
+                  defaultValue={theItem.style['fontFamily']}
+                  onChange={(e, value) => { 
+                    changeStyle('customFontURL', value);
+                  }}
+                  style={{ marginTop:'20px', display: 'inline-block' }}
+                  fullWidth
+                />
 
-              <select style={{ width: '200px', fontSize: '20px', overflowX: 'auto', padding: '10px', border: '1px solid grey', borderRadius: '5px' }}
-                    onChange={(e) => {
-                      let url = e.target.value;
-                      console.log(url);
-                      changeStyle('customFontURL', url);
-                    }}>
-                    {arrS3Font.map((url, i) => {
-                      return <option value={url} style={{width:'200px', overflowX:'auto'}}>{url.split("/").pop()}</option>;
-                    })}
-                </select>
- */}
-
-            </div>
+              </div>
               <div>
-                  <MyS3Uploader handleReadS3={handleReadS3} />
+                <MyS3Uploader handleUploadS3={handleUploadS3} />
               </div>
             </div>
           }

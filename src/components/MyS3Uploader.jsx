@@ -9,7 +9,7 @@ const STATUS_LOADING = 1;
 const STATUS_SUCCESS = 2;
 const STATUS_FAILED = 3;
 
-export const MyS3Uploader = ({handleReadS3}) => {
+export const MyS3Uploader = ({ handleUploadS3}) => {
 
   const [status, setStatus] = useState(STATUS_INIT);
 
@@ -20,9 +20,6 @@ export const MyS3Uploader = ({handleReadS3}) => {
   const readS3 = () => { 
     setStatus(STATUS_LOADING);
     http.readS3().then(resp => {
-      let arr = resp.data;
-      arr.splice(0, 1);
-      handleReadS3(arr);
       setStatus(STATUS_SUCCESS);
     }).catch(err => {
       console.log(err);
@@ -43,12 +40,12 @@ export const MyS3Uploader = ({handleReadS3}) => {
       setStatus(STATUS_LOADING);
       try {
         let resp = await http.uploadToS3(formData);
+        handleUploadS3();
         setStatus(STATUS_SUCCESS);
       } catch (err) {
         console.log(err);
         setStatus(STATUS_FAILED);
       }
-      readS3();
     }
     fileSelector.click();
   }

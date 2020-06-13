@@ -1,6 +1,9 @@
 export const MY_GOOGLE_API_KEY = "AIzaSyCECthHE0MkBqQQTcKqK8dUP8MFpV8hVjs";
 export const urlServer = "https://newspaperads.in/api/adbuilder/files/";
 
+export const Font_Extensions = ["eot", "ttf", "woff", "woff2", "svg"];
+export const Img_Extensions = ["apng", "png", "bmp", "gif", "ico", "cur", "jpg", "jpeg", "jfif", "pjpeg", "pjp", "svg", "tif", "tiff", "webp"];
+
 export const url2img = (url) => {
   return `url(${url})`;
 }
