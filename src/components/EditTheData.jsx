@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TextField, IconButton, Button } from "@material-ui/core";
 import SaveIcon from '@material-ui/icons/Save';
 
@@ -10,12 +10,21 @@ export const EditTheData = ({ theData, handleChangeTheData, handleSave }) => {
   const [dpiX, setDpiX] = useState(96);
   const [dpiY, setDpiY] = useState(96);
 
+  const [winch, setWinch] = useState(2);
+  const [hinch, setHinch] = useState(2);
+
+
+
   useEffect(() => { 
     let dpi_x = document.getElementById('testDPI').offsetWidth;
     let dpi_y = document.getElementById('testDPI').offsetHeight;
     setDpiX(dpi_x);
     setDpiY(dpi_y);
   }, []);
+
+  useEffect(() => { 
+
+  }, [theData]);
 
   const changeWidth = (width) => {
     handleChangeTheData({ ...theData, width });
@@ -52,7 +61,7 @@ export const EditTheData = ({ theData, handleChangeTheData, handleSave }) => {
           shrink: true,
         }}
         style={{ width: "120px", margin: "10px 10px" }}
-        defaultValue={Math.floor((theData.width * 10) / dpiX) / 10}
+        value={theData.width/dpiX}
         onChange={(e) => {
           changeWidth(e.target.value * dpiX);
         }}
@@ -66,45 +75,11 @@ export const EditTheData = ({ theData, handleChangeTheData, handleSave }) => {
           shrink: true,
         }}
         style={{ width: "120px", margin: "10px 10px" }}
-        defaultValue={Math.floor((theData.height * 10) / dpiY) / 10}
+        value={theData.height/dpiY}
         onChange={(e) => {
           changeHeight(e.target.value * dpiY);
         }}
       />
-
-      
-      {/* <TextField
-        label="width"
-        type="number"
-        variant="outlined"
-        size="small"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        style={{ width: "120px", margin: "10px 10px" }}
-        value={px2num(theData.width)}
-        onChange={onChangeWidth}
-      />
-      <TextField
-        label="height"
-        type="number"
-        variant="outlined"
-        size="small"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        style={{ width: "120px", margin: "10px 10px" }}
-        value={px2num(theData.height)}
-        onChange={onChangeHeight}
-      /> */}
-
-      {/* <IconButton
-        color="primary"
-        style={{ marginTop:'5px' }}
-        onClick={handleSave}
-      >
-        <SaveIcon />
-      </IconButton>  */}
 
       <div style={{display:'none'}}>
         <FontPicker
