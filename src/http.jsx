@@ -52,7 +52,7 @@ export const makePDF = ( width, height, formData ) => {
 
 
 export const uploadToS3 = (formData) => {
-  return axios.post(urlServer +"/files", formData, {
+  return axios.post("https://newspaperads.in/api/adbuilder/files/", formData, {
     headers: { "content-type": "multipart/form-data" },
   });
 }
