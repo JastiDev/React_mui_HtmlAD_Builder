@@ -21,7 +21,6 @@ export const MyImagePicker = ({ isModal, handleToggle, theItem, handleChange, ar
     if (!theItem) return;
     let tmp = JSON.parse(JSON.stringify(theItem));
     tmp.style[strkey] = value;
-    // console.log(value);
     handleChange(tmp);
   }
 

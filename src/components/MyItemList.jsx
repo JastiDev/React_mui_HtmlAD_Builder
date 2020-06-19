@@ -34,10 +34,10 @@ export const MyItemList = ({ arrItem, idTheItem, handleAddItem, handleRemoveItem
         {arrItem.map((item, i) => {
           let isTheItem = idTheItem !== null && i === idTheItem;
           return (
-            <Paper elevation={3}
+            <Paper key={i} elevation={3} 
               style={{ borderBottom: isTheItem ? '2px solid grey' : 'none' }}>
               <ListItem
-                button key={i}
+                button
                 selected={isTheItem}
                 onClick={(event) => {
                   if (isTheItem) handleSelectItem(null);

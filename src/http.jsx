@@ -45,7 +45,7 @@ export const deleteTemplate = (template) => {
 
 
 export const makePDF = ( width, height, formData ) => {
-  return axios.post(`${urlServer}/generatead?width=${width}&height=${height}`, formData, {
+  return axios.post(`${urlServer}/generatead?width=${width/96}&height=${height/96}`, formData, {
     headers: { "content-type": "multipart/form-data" },
   });
 }

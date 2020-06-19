@@ -1,15 +1,14 @@
 import React from 'react'
-import { Toolbar, IconButton, Button } from "@material-ui/core";
+import { Button, CircularProgress } from "@material-ui/core";
 // import Logo from "../logo.png";
 
 // import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import SaveIcon from '@material-ui/icons/Save';
 // import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
-import ImportExportIcon from '@material-ui/icons/ImportExport';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import DeveloperModeIcon from '@material-ui/icons/DeveloperMode';
 
-export const MyTopBar = ({ handleNew, handleSave, handleImport, handleExport, handleExportPdf }) => {
+export const MyTopBar = ({ handleNew, handleSave, handleImport, handleExport, handleExportPdf, isBusyPdf}) => {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-around' }}>
 
@@ -59,8 +58,10 @@ export const MyTopBar = ({ handleNew, handleSave, handleImport, handleExport, ha
         // style={{color:'white', borderColor:'white'}}
         startIcon={<PictureAsPdfIcon />}
         onClick={handleExportPdf}
+        disabled={isBusyPdf}
       >
         get pdf
+         {isBusyPdf && <CircularProgress size={14} />}
         </Button>
 
     </div>

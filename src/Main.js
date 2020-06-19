@@ -32,6 +32,7 @@ export default function Main() {
   const [isFontPick, setIsFontPick] = useState(false);
   const [isImgPick, setIsImgPick] = useState(false);
 
+  const [isBusyPdf, setIsBusyPdf] = useState(false);
 
   useEffect(() => {
     loadAppData();
@@ -46,7 +47,7 @@ export default function Main() {
 
       let arrTemplate = await http.readAllTemplate();
       arrTemplate = arrTemplate.filter(tt => tt.id >= 9);
-      console.log(arrTemplate);
+
       setArrTemplate(arrTemplate);
       setServerStatus(SERVER_OK);
     } catch (err) {
@@ -64,7 +65,6 @@ export default function Main() {
         let ext = url.split(".").pop();
         return common.Font_Extensions.includes(ext);
       });
-      console.log(arrS3Font);
 
       arrS3Font.forEach(url => {
         let family = common.url2family(url);
@@ -102,7 +102,6 @@ export default function Main() {
     if (window.confirm(`Save as "${theData.title}"`)) {
       let adContent = JSON.stringify(theData);
       http.createTempalte(adContent).then(resp => {
-        console.log(resp);
       });
     }
   }
@@ -127,6 +126,14 @@ export default function Main() {
 
   const handleExport = () => {
     let exportHtml = common.makeExportHtml(theData);
+
+    exportHtml = exportHtml.replace(/\s{2,}/g, '')   // <-- Replace all consecutive spaces, 2+
+      .replace(/%/g, '%25')     // <-- Escape %
+      .replace(/&/g, '%26')     // <-- Escape &
+      .replace(/#/g, '%23')     // <-- Escape #
+      .replace(/"/g, '%22')     // <-- Escape "
+      .replace(/'/g, '%27');    // <-- Escape ' (to be 100% safe)
+
     let dataUrl = "data:text/html," + exportHtml;
 
     let filename = theData.title + ".html";
@@ -136,24 +143,61 @@ export default function Main() {
     downloadLink.href = dataUrl;
     downloadLink.download = filename;
     downloadLink.click();
+    document.body.removeChild(downloadLink);
   }
 
   const handleExportPdf = async () => {
+    setIsBusyPdf(true);
     let exportHtml = common.makeExportHtml(theData);
-    let dataUrl = "data:text/html," + exportHtml;
     let filename = theData.title + ".html";
 
     try {
-      let blob = new Blob(["\ufeff", exportHtml], { type: "text/html" });
-      let file = new File([blob], filename);
+      let blob1 = new Blob(["\ufeff", exportHtml], { type: "text/html" });
+      let file = new File([blob1], filename);
 
       const formData = new FormData();
       formData.append("file", file);
 
       let resp = await http.makePDF(theData.width, theData.height, formData);
-      console.log(resp.data);
+
+
+      downloadPdf(resp.data);
     } catch (err) { console.log(err);}
 
+  }
+
+
+  const downloadPdf = (data) => {
+    console.log(data);
+    // var blob = new Blob([data], { type: 'application/pdf' });
+    // // IE doesn't allow using a blob object directly as link href
+    // // instead it is necessary to use msSaveOrOpenBlob
+    // if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+    //   window.navigator.msSaveOrOpenBlob(blob);
+    //   return;
+    // }
+
+    // // For other browsers:
+    // // Create a link pointing to the ObjectURL containing the blob.
+    // const url = window.URL.createObjectURL(blob);
+    // var link = document.createElement('a');
+    // link.href = url;
+    // link.download = theData.title + '.pdf';
+    // link.click();
+    // setTimeout(function () {
+    //   // For Firefox it is necessary to delay revoking the ObjectURL
+    //   window.URL.revokeObjectURL(url);
+    // }, 100);
+
+    let filename = theData.title + ".pdf";
+    let downloadLink = document.createElement("a");
+    document.body.appendChild(downloadLink);
+
+    downloadLink.href = data;
+    downloadLink.download = filename;
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    setIsBusyPdf(false);
   }
 
 
@@ -268,7 +312,8 @@ export default function Main() {
 
         <div style={{ flex: 5, display: 'flex', flexDirection: 'column', backgroundColor: 'lightgrey' }}>
           <div style={{ margin: '20px' }}>
-            <MyTopBar handleNew={handleNew} handleSave={handleSave} handleImport={handleImport} handleExport={handleExport} handleExportPdf={handleExportPdf} />
+            <MyTopBar handleNew={handleNew} handleSave={handleSave} handleImport={handleImport} handleExport={handleExport} handleExportPdf={handleExportPdf}
+              isBusyPdf={isBusyPdf}/>
           </div>
           <div style={{
             flex: 1, margin:'30px',

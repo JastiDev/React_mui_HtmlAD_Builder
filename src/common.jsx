@@ -151,21 +151,22 @@ export const makeExportHtml = (theData) => {
         ${strFontLink}
       </head>
       <body>
-        <div style="display:none;">
-          <myprojectjson>
-            ${strTheData}
-          </myprojectjson>
-        </div>
         ${strContent}
       </body>
       </html>`;
 
-  exportHtml = exportHtml.replace(/\s{2,}/g, '')   // <-- Replace all consecutive spaces, 2+
-    .replace(/%/g, '%25')     // <-- Escape %
-    .replace(/&/g, '%26')     // <-- Escape &
-    .replace(/#/g, '%23')     // <-- Escape #
-    .replace(/"/g, '%22')     // <-- Escape "
-    .replace(/'/g, '%27');    // <-- Escape ' (to be 100% safe)
+  // <div style="display:none;">
+  //   <myprojectjson>
+  //     ${strTheData}
+  //   </myprojectjson>
+  // </div>
+  
+  // exportHtml = exportHtml.replace(/\s{2,}/g, '')   // <-- Replace all consecutive spaces, 2+
+  //   .replace(/%/g, '%25')     // <-- Escape %
+  //   .replace(/&/g, '%26')     // <-- Escape &
+  //   .replace(/#/g, '%23')     // <-- Escape #
+  //   .replace(/"/g, '%22')     // <-- Escape "
+  //   .replace(/'/g, '%27');    // <-- Escape ' (to be 100% safe)
 
   return exportHtml;
 }
