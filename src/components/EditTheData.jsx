@@ -22,10 +22,42 @@ export const EditTheData = ({ theData, handleChangeTheData, handleSave }) => {
   }, [theData]);
 
   const changeWidth = (width) => {
-    handleChangeTheData({ ...theData, width });
+    if (width === 0) return;
+    let data = JSON.parse(JSON.stringify(theData));
+    data.width = width;
+
+    data.arrItem.forEach((item, i) => {
+      let ratio = 0;
+      if (theData.width !== 0) {
+        ratio = width / theData.width;
+      }
+      item.style.width = px2num(item.style.width) * ratio + 'px';
+      item.style.left = px2num(item.style.left) * ratio + 'px';
+      item.style.paddingLeft = px2num(item.style.paddingLeft) * ratio + 'px';
+      item.style.paddingRight = px2num(item.style.paddingRight) * ratio + 'px';
+    });
+    
+
+    handleChangeTheData(data);
   }
   const changeHeight = (height) => {
-    handleChangeTheData({ ...theData, height });
+    if (height === 0) return;
+    let data = JSON.parse(JSON.stringify(theData));
+    data.height = height;
+
+    data.arrItem.forEach((item, i) => {
+      let ratio = 0;
+      if (theData.height !== 0) {
+        ratio = height / theData.height;
+      }
+      item.style.height = px2num(item.style.height) * ratio + 'px';
+      item.style.top = px2num(item.style.top) * ratio + 'px';
+      item.style.paddingTop = px2num(item.style.paddingTop) * ratio + 'px';
+      item.style.paddingBottom = px2num(item.style.paddingBottom) * ratio + 'px';
+    });
+
+
+    handleChangeTheData(data);
   }
   const onChangeTitle = (e) => { 
     let title = e.target.value;

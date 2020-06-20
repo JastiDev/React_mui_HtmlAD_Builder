@@ -64,13 +64,13 @@ export const EditTheItem = ({ width, height, theItem, handleChange, handlePickFo
         })
         .catch((err) => console.log(err));
 
-      tmp.style["fontFamily"] = family;      
+      tmp.style["fontFamily"] = family;
     }
 
     tmp.style[strkey] = value;
     handleChange(tmp);
   }
-
+  
   // const onChangeImage = (e) => {
   //   if (e.target.files.length > 0) {
   //     let file = e.target.files[0];
