@@ -10,11 +10,6 @@ export const EditTheData = ({ theData, handleChangeTheData, handleSave }) => {
   const [dpiX, setDpiX] = useState(96);
   const [dpiY, setDpiY] = useState(96);
 
-  const [winch, setWinch] = useState(2);
-  const [hinch, setHinch] = useState(2);
-
-
-
   useEffect(() => { 
     let dpi_x = document.getElementById('testDPI').offsetWidth;
     let dpi_y = document.getElementById('testDPI').offsetHeight;
@@ -89,8 +84,6 @@ export const EditTheData = ({ theData, handleChangeTheData, handleSave }) => {
     </div>
   );
 }
-
-
 
 const DivTestDPI = () => (
   <div

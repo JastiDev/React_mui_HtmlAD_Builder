@@ -101,7 +101,17 @@ export default function Main() {
   const handleSave = () => {
     if (window.confirm(`Save as "${theData.title}"`)) {
       let adContent = JSON.stringify(theData);
-      http.createTempalte(adContent).then(resp => {
+      http.createTempalte(adContent).then(data => {
+        setArrTemplate(arrTemplate => [data, ...arrTemplate]);
+      });
+    }
+  }
+
+  const handleRemoveTemplate = (tt, i) => {
+    if (window.confirm(`Conrim Delete this Template?`)) {
+      http.deleteTemplate(tt).then((data) => {
+        console.log(data);
+        setArrTemplate(arrTemplate => [...arrTemplate.slice(0, i), ...arrTemplate.slice(i + 1, arrTemplate.length)]);
       });
     }
   }
@@ -180,7 +190,7 @@ export default function Main() {
   }
 
 
-  const handleTryData = (data) => { 
+  const handleTryData = (data) => {
     setIdTheItem(null);
     setTheData(data);
   }
@@ -308,7 +318,7 @@ export default function Main() {
 
         <div style={{ flex: 2, display: 'flex', flexDirection: 'column' }}>
           <MyTemplateTile arrTemplate={arrTemplate}
-            handleTryData={handleTryData} />
+            handleTryData={handleTryData} handleRemoveTemplate={handleRemoveTemplate}/>
         </div>
 
         <MyFontPicker isModal={isFontPick} handleToggle={(tf) => { setIsFontPick(tf); }}

@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import { Paper, Button, TextField } from "@material-ui/core";
+import { Paper, Button, TextField, IconButton } from "@material-ui/core";
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import CloseIcon from '@material-ui/icons/Close';
 
 import { MyCanvas } from './MyCanvas';
+import * as http from '../http';
 
-export const MyTemplateTile = ({ arrTemplate, handleTryData }) => {
+export const MyTemplateTile = ({ arrTemplate, handleTryData, handleRemoveTemplate }) => {
   const [theI, setTheI] = useState(null);
 
   const [isTry, setIsTry] = useState(false);
@@ -86,7 +88,11 @@ export const MyTemplateTile = ({ arrTemplate, handleTryData }) => {
         {arrTemplate.map((tt, i) => {
           let data = JSON.parse(tt.adContent);
           return (
-            <MyPreview key={tt.id} data={data} handleClick={()=>handleClickPreview(i, data)} isTheI={theI === i} />
+            <MyPreview key={tt.id}
+              data={data}
+              handleClick={() => handleClickPreview(i, data)}
+              isTheI={theI === i}
+              handleRemove={() => handleRemoveTemplate(tt, i)}/>
           );
         })}
       </div>
@@ -136,7 +142,7 @@ export const MyTemplateTile = ({ arrTemplate, handleTryData }) => {
 }
 
 
-const MyPreview = ({ data, handleClick, isTheI }) => { 
+const MyPreview = ({ data, handleClick, isTheI, handleRemove }) => { 
   let WH = 150;
   if (data.width === 0 || data.height === 0) return null;
   let zoomRatio = Math.min(WH / data.width, WH / data.height);
@@ -146,18 +152,29 @@ const MyPreview = ({ data, handleClick, isTheI }) => {
   let transform = `translate(-${(1 - zoomRatio) * 50}%, -${(1 - zoomRatio) * 50}%) scale(${zoomRatio})`;
 
   return (
-    <Paper elevation={9} style={{
-      width, height,
-      margin: '20px 20px', display: 'inline-block',
-      border: ( isTheI )?'3px dotted green': '3px dotted transparent'
-    }} >
-      <div style={{ transform }}
-        onClick={handleClick}>
-        <MyCanvas theData={data}
-          handleChangeTheItem={() => { }}
-          idTheItem={null}
-          handleSelectItem={() => { }} />
-      </div>
-    </Paper>
+    <div>
+      <IconButton style={{ zIndex: 5000, float: 'left', marginTop: height / 4 }}
+        color="default"
+        onClick={handleRemove}
+      >
+        <CloseIcon />
+      </IconButton>
+
+      <Paper elevation={9} style={{
+        width, height,
+        margin: '20px 20px', display: 'inline-block',
+        border: (isTheI) ? '3px dotted green' : '3px dotted transparent'
+      }} >
+
+        <div style={{ transform }}
+          onClick={handleClick}>
+          <MyCanvas theData={data}
+            handleChangeTheItem={() => { }}
+            idTheItem={null}
+            handleSelectItem={() => { }} />
+        </div>
+      </Paper>
+    
+    </div>
   );
 }
