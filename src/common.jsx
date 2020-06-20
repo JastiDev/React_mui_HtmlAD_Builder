@@ -30,9 +30,17 @@ export const px2num = (str) => {
   if (str[len - 2] === "p" && str[len - 1] === "x") num = Number(str.slice(0, len - 2));
   else num = Number(str);
   
-  return Math.ceil(num*10000)/10000;
+  return Math.round(num*10000)/10000;
 };
 
+export const pr2num = (str) => { 
+  let num = 0;
+  if (!str) str = "";
+  str = "" + str; 
+  let j = str.indexOf('%');
+  num = Number(str.slice(0, j));
+  return Math.round(num * 10000) / 10000;
+}
 
 export const DPI0 = 96;
 

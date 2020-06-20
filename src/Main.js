@@ -289,11 +289,13 @@ export default function Main() {
               overflowX: "auto",
             }}>
               {idTheItem !== null && (
-                <EditTheItem
-                  theItem={theData.arrItem[idTheItem]}
-                  handleChange={handleChangeTheItem}
-                  handlePickFont={(tf) => setIsFontPick(tf)}
-                  handlePickImg={(tf) => setIsImgPick(tf)}/>
+              <EditTheItem
+                width={theData.width}
+                height={theData.height}
+                theItem={theData.arrItem[idTheItem]}
+                handleChange={handleChangeTheItem}
+                handlePickFont={(tf) => setIsFontPick(tf)}
+                handlePickImg={(tf) => setIsImgPick(tf)}/>
               )}
             </div>
 

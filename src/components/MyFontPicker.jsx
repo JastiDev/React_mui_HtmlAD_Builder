@@ -24,7 +24,6 @@ export const MyFontPicker = ({ isModal, theItem, handleChange, handleToggle, arr
     let tmp = JSON.parse(JSON.stringify(theItem));
 
     if (strkey === "useCustomFont") {
-      tmp.style["fontFamily"] = "";
       tmp.style["customFontURL"] = "";
     }
     else if (strkey === "customFontURL") { //this is the trick, not css
@@ -48,7 +47,9 @@ export const MyFontPicker = ({ isModal, theItem, handleChange, handleToggle, arr
 
   const onClickUseCustom = () => {
     if (!theItem) return;
-    changeStyle("useCustomFont", !theItem.style["useCustomFont"]);
+    try { 
+      changeStyle("useCustomFont", !theItem.style["useCustomFont"]);
+    } catch (err) { console.log(err);}
   }
 
   return (

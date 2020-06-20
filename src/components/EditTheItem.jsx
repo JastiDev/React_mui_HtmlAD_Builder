@@ -15,9 +15,9 @@ import { Autocomplete } from "@material-ui/lab";
 import PaletteIcon from "@material-ui/icons/Palette";
 import CancelIcon from '@material-ui/icons/Cancel';
 
-import { px2num, url2family } from "../common";
+import { pr2num, px2num, url2family } from "../common";
 
-export const EditTheItem = ({ theItem, handleChange, handlePickFont, handlePickImg }) => {
+export const EditTheItem = ({ width, height, theItem, handleChange, handlePickFont, handlePickImg }) => {
 
   const [isModal, setIsModal] = useState(false);
   const [editingColor, setEditingColor] = useState('color');
@@ -98,9 +98,9 @@ export const EditTheItem = ({ theItem, handleChange, handlePickFont, handlePickI
   //   />
   // );
 
-  const MyInputNumber = (strkey) => (
+  const MyInputPixel = (strkey) => (
     <TextField
-      label={strkey}
+      label={strkey+"(px)"}
       type="number"
       variant="outlined"
       size="small"
@@ -109,7 +109,38 @@ export const EditTheItem = ({ theItem, handleChange, handlePickFont, handlePickI
       }}
       style={{ width: "120px", margin: "10px 10px" }}
       value={px2num(theItem.style[strkey])}
-      onChange={(e) => changeStyle(strkey, e.target.value + "px" )}
+      onChange={(e) => changeStyle(strkey, e.target.value + "px")}
+    />
+  );
+
+
+  const MyInputPercentW = (strkey) => (
+    <TextField
+      label={strkey+"(%)"}
+      type="number"
+      variant="outlined"
+      size="small"
+      InputLabelProps={{
+        shrink: true,
+      }}
+      style={{ width: "120px", margin: "10px 10px" }}
+      value={r4(px2num(theItem.style[strkey]) * 100 / width)}
+      onChange={(e) => changeStyle(strkey, e.target.value * width/100 + "px")}
+    />
+  );
+
+  const MyInputPercentH = (strkey) => (
+    <TextField
+      label={strkey + "(%)"}
+      type="number"
+      variant="outlined"
+      size="small"
+      InputLabelProps={{
+        shrink: true,
+      }}
+      style={{ width: "120px", margin: "10px 10px" }}
+      value={r4(px2num(theItem.style[strkey]) * 100 / height)}
+      onChange={(e) => changeStyle(strkey, e.target.value * height / 100 + "px")}
     />
   );
 
@@ -196,7 +227,7 @@ export const EditTheItem = ({ theItem, handleChange, handlePickFont, handlePickI
         font_Family
       </Button>
 
-      {MyInputNumber("fontSize")}
+      {MyInputPixel("fontSize")}
       {MyInputColor("color")}
       {MyInputSelect("textAlign")}
       {MyInputSelect("textAlignVertical")}
@@ -205,19 +236,19 @@ export const EditTheItem = ({ theItem, handleChange, handlePickFont, handlePickI
       
       
       <hr />
-      {MyInputNumber("width")}
-      {MyInputNumber("height")}
-      {MyInputNumber("left")}
-      {MyInputNumber("top")}
+      {MyInputPercentW("width")}
+      {MyInputPercentH("height")}
+      {MyInputPercentW("left")}
+      {MyInputPercentH("top")}
       <hr />
-      {MyInputNumber("paddingLeft")}
-      {MyInputNumber("paddingRight")}
-      {MyInputNumber("paddingTop")}
-      {MyInputNumber("paddingBottom")}
+      {MyInputPercentW("paddingLeft")}
+      {MyInputPercentW("paddingRight")}
+      {MyInputPercentH("paddingTop")}
+      {MyInputPercentH("paddingBottom")}
       <hr />
       {MyInputSelect("borderStyle")}
-      {MyInputNumber("borderWidth")}
-      {MyInputNumber("borderRadius")}
+      {MyInputPixel("borderWidth")}
+      {MyInputPixel("borderRadius")}
       {MyInputColor("borderColor")}
       <hr />
 
@@ -301,3 +332,5 @@ const Arr_Option = {
   textAlign: ["left", "right", "center", "justify"],
   textAlignVertical: ["none", "top", "center", "bottom"], //this is not css, here is the trick
 };
+
+const r4 = (n) => (Math.round(n * 10000) / 10000);
