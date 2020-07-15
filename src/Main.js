@@ -55,9 +55,11 @@ export default function Main() {
     // var evtobj = window.event ? window.event : e;
     if (e.keyCode === 90 && e.ctrlKey) {
       undoTheData();
+      setIdTheItem(null);
       setRefresh((refresh) => -refresh);
     } else if (e.keyCode === 89 && e.ctrlKey) {
       redoTheData();
+      setIdTheItem(null);
       setRefresh((refresh) => -refresh);
     }
   };
