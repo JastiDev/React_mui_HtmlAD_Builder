@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SketchPicker } from "react-color";
+import { ChromePicker } from "react-color";
 
 import {
   TextField,
@@ -29,45 +29,45 @@ export const EditTheItem = ({
   const [editingColor, setEditingColor] = useState("color");
 
   const setKeyDownListener = () => {
-    document.addEventListener("keydown", handleKeyDown);
+    // document.addEventListener("keydown", handleKeyDown);
   };
 
   useEffect(setKeyDownListener, []);
 
-  const handleKeyDown = ({ keyCode }) => {
-    let tmp = JSON.parse(JSON.stringify(theItem));
-    let strkey = null;
-    let value = 0;
+  // const handleKeyDown = ({ keyCode }) => {
+  //   let tmp = JSON.parse(JSON.stringify(theItem));
+  //   let strkey = null;
+  //   let value = 0;
 
-    if (keyCode === 40) {
-      //down
-      strkey = "top";
-      value = px2num(tmp.style[strkey]);
+  //   if (keyCode === 40) {
+  //     //down
+  //     strkey = "top";
+  //     value = px2num(tmp.style[strkey]);
 
-      value = value + 1;
-    } else if (keyCode === 38) {
-      //down
-      strkey = "top";
-      value = px2num(tmp.style[strkey]);
+  //     value = value + 1;
+  //   } else if (keyCode === 38) {
+  //     //down
+  //     strkey = "top";
+  //     value = px2num(tmp.style[strkey]);
 
-      value = value - 1;
-    } else if (keyCode === 39) {
-      //down
-      strkey = "left";
-      value = px2num(tmp.style[strkey]);
+  //     value = value - 1;
+  //   } else if (keyCode === 39) {
+  //     //down
+  //     strkey = "left";
+  //     value = px2num(tmp.style[strkey]);
 
-      value = value + 1;
-    } else if (keyCode === 37) {
-      //down
-      strkey = "left";
-      value = px2num(tmp.style[strkey]);
+  //     value = value + 1;
+  //   } else if (keyCode === 37) {
+  //     //down
+  //     strkey = "left";
+  //     value = px2num(tmp.style[strkey]);
 
-      value = value - 1;
-    }
-    if (strkey) {
-      changeStyle(strkey, value + "px");
-    }
-  };
+  //     value = value - 1;
+  //   }
+  //   if (strkey) {
+  //     changeStyle(strkey, value + "px");
+  //   }
+  // };
 
   const changeIdStr = (idStr) => {
     let tmp = JSON.parse(JSON.stringify(theItem));
@@ -345,10 +345,13 @@ export const EditTheItem = ({
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <SketchPicker
+          <ChromePicker
+            disableAlpha={false}
             color={theItem.style[editingColor]}
             onChangeComplete={(color) => {
-              changeStyle(editingColor, color.hex);
+              let strColor = `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`;
+              console.log(strColor);
+              changeStyle(editingColor, strColor);
             }}
           />
         </DialogContent>

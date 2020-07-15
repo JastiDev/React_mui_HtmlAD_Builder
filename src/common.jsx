@@ -8,25 +8,7 @@ export const setDpi = (x, y) => {
   dpiX = x;
   dpiY = y;
 };
-
-export const Font_Extensions = ["eot", "ttf", "woff", "woff2", "svg"];
-export const Img_Extensions = [
-  "apng",
-  "png",
-  "bmp",
-  "gif",
-  "ico",
-  "cur",
-  "jpg",
-  "jpeg",
-  "jfif",
-  "pjpeg",
-  "pjp",
-  "svg",
-  "tif",
-  "tiff",
-  "webp",
-];
+export const r4 = (n) => Math.round(n * 10000) / 10000;
 
 export const url2img = (url) => {
   return `url(${url})`;
@@ -203,3 +185,22 @@ export const makeExportHtml = (theData) => {
 
   return exportHtml;
 };
+
+export const Font_Extensions = ["eot", "ttf", "woff", "woff2", "svg"];
+export const Img_Extensions = [
+  "apng",
+  "png",
+  "bmp",
+  "gif",
+  "ico",
+  "cur",
+  "jpg",
+  "jpeg",
+  "jfif",
+  "pjpeg",
+  "pjp",
+  "svg",
+  "tif",
+  "tiff",
+  "webp",
+];

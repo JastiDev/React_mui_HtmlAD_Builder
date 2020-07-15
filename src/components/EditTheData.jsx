@@ -17,8 +17,6 @@ export const EditTheData = ({ theData, handleChangeTheData, handleSave }) => {
     common.setDpi(dpi_x, dpi_y);
   }, []);
 
-  useEffect(() => {}, [theData]);
-
   const changeWidth = (width) => {
     if (width === 0) return;
     console.log(width);
@@ -41,7 +39,7 @@ export const EditTheData = ({ theData, handleChangeTheData, handleSave }) => {
     handleChangeTheData(data);
   };
   const changeHeight = (height) => {
-    //if (height === 0) return;
+    if (height === 0) return;
     let data = JSON.parse(JSON.stringify(theData));
     data.height = height;
 
@@ -95,11 +93,12 @@ export const EditTheData = ({ theData, handleChangeTheData, handleSave }) => {
           shrink: true,
         }}
         style={{ width: "120px", margin: "10px 10px" }}
-        value={parseFloat(theData.width / dpiX).toFixed(2)}
+        value={common.r4(theData.width / dpiX)}
         onChange={(e) => {
           changeWidth(e.target.value * dpiX);
         }}
       />
+
       <TextField
         label={`Height (${dpiY}dpi)`}
         type="number"
@@ -110,7 +109,7 @@ export const EditTheData = ({ theData, handleChangeTheData, handleSave }) => {
           shrink: true,
         }}
         style={{ width: "120px", margin: "10px 10px" }}
-        value={parseFloat(theData.height / dpiY).toFixed(2)}
+        value={common.r4(theData.height / dpiY)}
         onChange={(e) => {
           changeHeight(e.target.value * dpiY);
         }}
