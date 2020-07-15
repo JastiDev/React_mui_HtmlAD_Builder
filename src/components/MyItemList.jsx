@@ -1,5 +1,5 @@
-import React from 'react'
-import { IconButton, Paper } from "@material-ui/core";
+import React from 'react';
+import { IconButton, Paper } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -7,14 +7,18 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-
-export const MyItemList = ({ arrItem, idTheItem, handleAddItem, handleRemoveItem, handleSelectItem}) => {
-
+export const MyItemList = ({
+  arrItem,
+  idTheItem,
+  handleAddItem,
+  handleRemoveItem,
+  handleSelectItem
+}) => {
   return (
-    <div style={{display:'flex', width:'100%'}}>
+    <div style={{ display: 'flex', width: '100%' }}>
       <div>
         <IconButton
-          style={{ color: 'blue', marginTop:'5px' }}
+          style={{ color: 'blue', marginTop: '5px' }}
           onClick={handleAddItem}
         >
           <AddIcon />
@@ -29,17 +33,27 @@ export const MyItemList = ({ arrItem, idTheItem, handleAddItem, handleRemoveItem
           <DeleteIcon />
         </IconButton>
       </div>
-      
-      <List component="nav" aria-label="main mailbox folders" style={{ flex: 1, display: 'flex', flexWrap:'wrap' }}>
+
+      <List
+        component="nav"
+        aria-label="main mailbox folders"
+        style={{ flex: 1, display: 'flex', flexWrap: 'wrap' }}
+      >
         {arrItem.map((item, i) => {
           let isTheItem = idTheItem !== null && i === idTheItem;
           return (
-            <Paper key={i} elevation={3} 
-              style={{ borderBottom: isTheItem ? '2px solid grey' : 'none' }}>
+            <Paper
+              key={i}
+              elevation={3}
+              style={{
+                borderBottom: isTheItem ? '2px solid grey' : 'none',
+                marginLeft: '5px'
+              }}
+            >
               <ListItem
                 button
                 selected={isTheItem}
-                onClick={(event) => {
+                onClick={event => {
                   if (isTheItem) handleSelectItem(null);
                   else handleSelectItem(i);
                 }}
@@ -48,10 +62,8 @@ export const MyItemList = ({ arrItem, idTheItem, handleAddItem, handleRemoveItem
               </ListItem>
             </Paper>
           );
-        }
-        )}
+        })}
       </List>
-
     </div>
-  )
-}
+  );
+};

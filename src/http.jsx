@@ -1,18 +1,26 @@
 import axios from 'axios';
 
 const urlServer = 'https://newspaperads.in/api/adbuilder';
-
+// const urlServer = 'https://13.233.180.84/adbuilder/api/adbuilder';
 
 export const readAllTemplate = () => {
-  return fetch(urlServer + "/template", {
+  return fetch(urlServer + '/template', {
     method: 'GET'
   }).then(resp => {
     return resp.json();
   });
-}
+};
 
-export const createTempalte = (adContent) => { 
-  return fetch(urlServer + "/template", {
+export const readAdDataContent = adId => {
+  return fetch(urlServer + '/getadcontent/' + adId, {
+    method: 'GET'
+  }).then(resp => {
+    return resp.json();
+  });
+};
+
+export const createTempalte = adContent => {
+  return fetch(urlServer + '/template', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -21,9 +29,9 @@ export const createTempalte = (adContent) => {
       adContent
     })
   }).then(resp => resp.json());
-}
+};
 
-// export const updateTemplate = (theData) => { 
+// export const updateTemplate = (theData) => {
 //   return fetch(urlServer + "/template"+"/update", {
 //     method: 'POST',
 //     body: {
@@ -33,30 +41,32 @@ export const createTempalte = (adContent) => {
 
 // }
 
-export const deleteTemplate = (template) => {
-  return fetch(urlServer + "/template/delete", {
+export const deleteTemplate = template => {
+  return fetch(urlServer + '/template/delete', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(template)
   }).then(resp => resp.json());
-}
+};
 
+export const makePDF = (width, height, formData) => {
+  return axios.post(
+    `${urlServer}/generatead?width=${width / 96}&height=${height / 96}`,
+    formData,
+    {
+      headers: { 'content-type': 'multipart/form-data' }
+    }
+  );
+};
 
-export const makePDF = ( width, height, formData ) => {
-  return axios.post(`${urlServer}/generatead?width=${width/96}&height=${height/96}`, formData, {
-    headers: { "content-type": "multipart/form-data" },
+export const uploadToS3 = formData => {
+  return axios.post('https://newspaperads.in/api/adbuilder/files/', formData, {
+    headers: { 'content-type': 'multipart/form-data' }
   });
-}
+};
 
-
-export const uploadToS3 = (formData) => {
-  return axios.post("https://newspaperads.in/api/adbuilder/files/", formData, {
-    headers: { "content-type": "multipart/form-data" },
-  });
-}
-
-export const readS3 = () => { 
-  return axios.get("https://newspaperads.in/api/adbuilder/files/");
-}
+export const readS3 = () => {
+  return axios.get('https://newspaperads.in/api/adbuilder/files/');
+};

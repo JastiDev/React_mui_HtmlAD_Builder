@@ -18,6 +18,7 @@
     "react-color": "^2.18.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
+    "simple-undo": "^1.0.2",
     "webfontloader": "^1.6.28"
   },
   "scripts": {

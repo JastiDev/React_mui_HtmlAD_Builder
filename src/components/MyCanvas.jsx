@@ -1,14 +1,22 @@
-import React from 'react'
-import { px2num } from '../common';
+import React from "react";
+import { px2num } from "../common";
 
 let holding = -1;
 let lastDownPos = { x: 0, y: 0 };
 let lastMovePos = { x: 0, y: 0 };
 
-export const MyCanvas = ({ theData, idTheItem, handleChangeTheItem, handleSelectItem }) => {
+export const MyCanvas = ({
+  theData,
+  idTheItem,
+  handleChangeTheItem,
+  handleSelectItem,
+}) => {
   let { title, width, height, arrItem } = theData;
 
-  let theItem = (idTheItem !== null && arrItem.length > idTheItem) ? arrItem[idTheItem] : null;
+  let theItem =
+    idTheItem !== null && arrItem.length > idTheItem
+      ? arrItem[idTheItem]
+      : null;
 
   const onClickSVG = (evt) => {
     let target = document.getElementById("svgRoom");
@@ -25,7 +33,7 @@ export const MyCanvas = ({ theData, idTheItem, handleChangeTheItem, handleSelect
       let top = px2num(item.style.top);
       let bottom = px2num(item.style.top) + px2num(item.style.height);
 
-      if (left < x && x < right && top < y && y < bottom) { 
+      if (left < x && x < right && top < y && y < bottom) {
         arrId.push(i);
       }
     });
@@ -47,20 +55,25 @@ export const MyCanvas = ({ theData, idTheItem, handleChangeTheItem, handleSelect
     lastMovePos = { x, y };
 
     if (theItem) holding = whichPartOfTheItem(lastDownPos);
-  }
+  };
   const onMouseUpSVG = (evt) => {
+    handleChangeTheItem(theItem, true);
     holding = -1;
-  }
+  };
 
   const doTrickOfTextAlignVertical = (item) => {
-    let hDiv = px2num(item.style['height']);
-    let hFont = px2num(item.style['fontSize']);
-    if (item.style['textAlignVertical'] === 'center') item.style['paddingTop'] = Math.max((hDiv - hFont) / 2, 0) + 'px';
-    else if (item.style['textAlignVertical'] === 'bottom') item.style['paddingTop'] = Math.max(hDiv - hFont, 0) + 'px';
+    let hDiv = px2num(item.style["height"]);
+    let hFont = px2num(item.style["fontSize"]);
+    if (item.style["textAlignVertical"] === "center")
+      item.style["paddingTop"] = Math.max((hDiv - hFont) / 2, 0) + "px";
+    else if (item.style["textAlignVertical"] === "bottom")
+      item.style["paddingTop"] = Math.max(hDiv - hFont, 0) + "px";
   };
 
   const onMouseMoveSVG = (evt) => {
     if (!theItem || holding === -1) return;
+
+    let newItem = JSON.parse(JSON.stringify(theItem));
 
     let target = document.getElementById("svgRoom");
     var dim = target.getBoundingClientRect();
@@ -70,72 +83,60 @@ export const MyCanvas = ({ theData, idTheItem, handleChangeTheItem, handleSelect
     let dy = y - lastMovePos.y;
     lastMovePos = { x, y };
 
-
     if (holding === 8) {
-      let newItem = JSON.parse(JSON.stringify(theItem));
-      newItem.style.left = (px2num(theItem.style.left) + dx) + 'px';
-      newItem.style.top = (px2num(theItem.style.top) + dy) + 'px';
-      handleChangeTheItem(newItem);
-
+      newItem.style.left = px2num(theItem.style.left) + dx + "px";
+      newItem.style.top = px2num(theItem.style.top) + dy + "px";
+      handleChangeTheItem(newItem, false);
     } else if (holding === 0) {
-      let newItem = JSON.parse(JSON.stringify(theItem));
-      newItem.style.left = (px2num(theItem.style.left) + dx) + 'px';
-      newItem.style.top = (px2num(theItem.style.top) + dy) + 'px';
-      newItem.style.width = (px2num(theItem.style.width) - dx) + 'px';
-      newItem.style.height = (px2num(theItem.style.height) - dy) + 'px';
+      // let newItem = JSON.parse(JSON.stringify(theItem));
+      newItem.style.left = px2num(theItem.style.left) + dx + "px";
+      newItem.style.top = px2num(theItem.style.top) + dy + "px";
+      newItem.style.width = px2num(theItem.style.width) - dx + "px";
+      newItem.style.height = px2num(theItem.style.height) - dy + "px";
       doTrickOfTextAlignVertical(newItem);
-      handleChangeTheItem(newItem);
-
+      handleChangeTheItem(newItem, false);
     } else if (holding === 1) {
-      let newItem = JSON.parse(JSON.stringify(theItem));
-      newItem.style.top = (px2num(theItem.style.top) + dy) + 'px';
-      newItem.style.width = (px2num(theItem.style.width) + dx) + 'px';
-      newItem.style.height = (px2num(theItem.style.height) - dy) + 'px';
+      // let newItem = JSON.parse(JSON.stringify(theItem));
+      newItem.style.top = px2num(theItem.style.top) + dy + "px";
+      newItem.style.width = px2num(theItem.style.width) + dx + "px";
+      newItem.style.height = px2num(theItem.style.height) - dy + "px";
       doTrickOfTextAlignVertical(newItem);
-      handleChangeTheItem(newItem);
-
+      handleChangeTheItem(newItem, false);
     } else if (holding === 2) {
-      let newItem = JSON.parse(JSON.stringify(theItem));
-      newItem.style.width = (px2num(theItem.style.width) + dx) + 'px';
-      newItem.style.height = (px2num(theItem.style.height) + dy) + 'px';
+      // let newItem = JSON.parse(JSON.stringify(theItem));
+      newItem.style.width = px2num(theItem.style.width) + dx + "px";
+      newItem.style.height = px2num(theItem.style.height) + dy + "px";
       doTrickOfTextAlignVertical(newItem);
-      handleChangeTheItem(newItem);
-
+      handleChangeTheItem(newItem, false);
     } else if (holding === 3) {
-      let newItem = JSON.parse(JSON.stringify(theItem));
-      newItem.style.left = (px2num(theItem.style.left) + dx) + 'px';
-      newItem.style.width = (px2num(theItem.style.width) - dx) + 'px';
-      newItem.style.height = (px2num(theItem.style.height) + dy) + 'px';
+      // let newItem = JSON.parse(JSON.stringify(theItem));
+      newItem.style.left = px2num(theItem.style.left) + dx + "px";
+      newItem.style.width = px2num(theItem.style.width) - dx + "px";
+      newItem.style.height = px2num(theItem.style.height) + dy + "px";
       doTrickOfTextAlignVertical(newItem);
-      handleChangeTheItem(newItem);
-
+      handleChangeTheItem(newItem, false);
     } else if (holding === 4) {
-      let newItem = JSON.parse(JSON.stringify(theItem));
-      newItem.style.top = (px2num(theItem.style.top) + dy) + 'px';
-      newItem.style.height = (px2num(theItem.style.height) - dy) + 'px';
+      // let newItem = JSON.parse(JSON.stringify(theItem));
+      newItem.style.top = px2num(theItem.style.top) + dy + "px";
+      newItem.style.height = px2num(theItem.style.height) - dy + "px";
       doTrickOfTextAlignVertical(newItem);
-      handleChangeTheItem(newItem);
-
+      handleChangeTheItem(newItem, false);
     } else if (holding === 5) {
-      let newItem = JSON.parse(JSON.stringify(theItem));
-      newItem.style.width = (px2num(theItem.style.width) + dx) + 'px';
-      handleChangeTheItem(newItem);
-
+      // let newItem = JSON.parse(JSON.stringify(theItem));
+      newItem.style.width = px2num(theItem.style.width) + dx + "px";
+      handleChangeTheItem(newItem, false);
     } else if (holding === 6) {
-      let newItem = JSON.parse(JSON.stringify(theItem));
-      newItem.style.height = (px2num(theItem.style.height) + dy) + 'px';
+      // let newItem = JSON.parse(JSON.stringify(theItem));
+      newItem.style.height = px2num(theItem.style.height) + dy + "px";
       doTrickOfTextAlignVertical(newItem);
-      handleChangeTheItem(newItem);
-
+      handleChangeTheItem(newItem, false);
     } else if (holding === 7) {
-      let newItem = JSON.parse(JSON.stringify(theItem));
-      newItem.style.left = (px2num(theItem.style.left) + dx) + 'px';
-      newItem.style.width = (px2num(theItem.style.width) - dx) + 'px';
-      handleChangeTheItem(newItem);
+      // let newItem = JSON.parse(JSON.stringify(theItem));
+      newItem.style.left = px2num(theItem.style.left) + dx + "px";
+      newItem.style.width = px2num(theItem.style.width) - dx + "px";
+      handleChangeTheItem(newItem, false);
     }
-
-  }
-
+  };
 
   const whichPartOfTheItem = ({ x, y }) => {
     // -1: outside
@@ -154,17 +155,21 @@ export const MyCanvas = ({ theData, idTheItem, handleChangeTheItem, handleSelect
     let eps = eightPos(left, top, w, h);
     for (let i = 0; i < eps.length; i++) {
       let p = eps[i];
-      if ((p.x - x) * (p.x - x) + (p.y - y) * (p.y - y) < Point_Radius * Point_Radius) {
-        ret = i; break;
+      if (
+        (p.x - x) * (p.x - x) + (p.y - y) * (p.y - y) <
+        Point_Radius * Point_Radius
+      ) {
+        ret = i;
+        break;
       }
     }
 
     return ret;
-  }
+  };
 
   const Point_Radius = 10;
 
-  const eightPos = (left, top, w, h) => ([
+  const eightPos = (left, top, w, h) => [
     { x: left, y: top },
     { x: left + w, y: top },
     { x: left + w, y: top + h },
@@ -173,7 +178,7 @@ export const MyCanvas = ({ theData, idTheItem, handleChangeTheItem, handleSelect
     { x: left + w, y: top + h / 2 },
     { x: left + w / 2, y: top + h },
     { x: left, y: top + h / 2 },
-  ]);
+  ];
 
   return (
     <div
@@ -266,5 +271,5 @@ export const MyCanvas = ({ theData, idTheItem, handleChangeTheItem, handleSelect
         })}
       </svg>
     </div>
-  )
-}
+  );
+};
