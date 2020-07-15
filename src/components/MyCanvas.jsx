@@ -11,7 +11,7 @@ export const MyCanvas = ({
   handleChangeTheItem,
   handleSelectItem,
 }) => {
-  let { title, width, height, arrItem } = theData;
+  let { width, height, arrItem } = theData;
 
   let theItem =
     idTheItem !== null && arrItem.length > idTheItem

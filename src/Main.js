@@ -34,7 +34,6 @@ export default function Main() {
   const [arrS3Font, setArrS3Font] = useState([]);
   const [arrS3Img, setArrS3Img] = useState([]);
 
-  const [adId, setAdId] = useState(null);
   const [idTheItem, setIdTheItem] = useState(null);
   const [arrTemplate, setArrTemplate] = useState([]);
   const [selAdContent, setSelAdContent] = useState(null);
@@ -44,17 +43,20 @@ export default function Main() {
 
   const [isBusyPdf, setIsBusyPdf] = useState(false);
 
-  useEffect(() => {
+  const onDidMount = () => {
     loadAppData();
     document.addEventListener("keydown", onCtrlZY);
-  }, []);
+    console.log(refresh);
+  };
+
+  useEffect(onDidMount, []);
 
   const onCtrlZY = (e) => {
-    var evtobj = window.event ? window.event : e;
-    if (e.keyCode == 90 && e.ctrlKey) {
+    // var evtobj = window.event ? window.event : e;
+    if (e.keyCode === 90 && e.ctrlKey) {
       undoTheData();
       setRefresh((refresh) => -refresh);
-    } else if (e.keyCode == 89 && e.ctrlKey) {
+    } else if (e.keyCode === 89 && e.ctrlKey) {
       redoTheData();
       setRefresh((refresh) => -refresh);
     }
@@ -65,7 +67,6 @@ export default function Main() {
       setServerStatus(SERVER_LOADING);
       readS3();
       let adId = getAdIdFromURL();
-      setAdId(adId);
 
       initTheData(common.make_the_data());
       setRefresh((refresh) => -refresh);
@@ -278,8 +279,6 @@ export default function Main() {
 
   const handleRemoveItem = (e) => {
     if (idTheItem !== null && window.confirm("Remove this Div?")) {
-      let len = theData.arrItem.length;
-
       theData.arrItem.splice(idTheItem, 1);
       saveTheData();
       setRefresh((refresh) => -refresh);

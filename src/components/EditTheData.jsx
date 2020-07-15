@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { TextField, IconButton, Button } from "@material-ui/core";
-import SaveIcon from "@material-ui/icons/Save";
+import React, { useState, useEffect } from "react";
+import { TextField } from "@material-ui/core";
 
 import { px2num } from "../common";
 import FontPicker from "font-picker-react";
