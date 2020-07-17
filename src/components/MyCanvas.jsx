@@ -10,6 +10,9 @@ export const MyCanvas = ({
   idTheItem,
   handleChangeTheItem,
   handleSelectItem,
+  handleMultiSelectItem,
+  arrMulti,
+  isMulti,
 }) => {
   let { width, height, arrItem } = theData;
 
@@ -17,6 +20,20 @@ export const MyCanvas = ({
     idTheItem !== null && arrItem.length > idTheItem
       ? arrItem[idTheItem]
       : null;
+
+  const topLevelId = (arrId) => {
+    let maxZ = 0;
+    let maxId = 0;
+    for (let i = 0; i < arrId.length; i++) {
+      let id = arrId[i];
+      let z = arrItem[id].style["zIndex"];
+      if (z > maxZ) {
+        maxZ = z;
+        maxId = id;
+      }
+    }
+    return maxId;
+  };
 
   const onClickSVG = (evt) => {
     let target = document.getElementById("svgRoom");
@@ -39,8 +56,13 @@ export const MyCanvas = ({
     });
 
     if (arrId.length > 0) {
-      if (arrId.includes(idTheItem)) handleSelectItem(null);
-      else handleSelectItem(arrId[0]);
+      let ii = topLevelId(arrId);
+      if (evt.shiftKey) {
+        handleMultiSelectItem(ii);
+      } else {
+        if (arrId.includes(idTheItem)) handleSelectItem(null);
+        else handleSelectItem(ii);
+      }
     } else {
       handleSelectItem(null);
     }
@@ -241,31 +263,46 @@ export const MyCanvas = ({
               key={item.id}
               transform={`translate(${left}, ${top})`}
             >
-              <rect
-                x={0}
-                y={0}
-                width={w}
-                height={h}
-                style={{
-                  fill: "blue",
-                  fillOpacity: theItem && theItem.id === item.id ? 0.1 : 0,
-                  stroke: theItem && theItem.id === item.id ? "blue" : "none",
-                  strokeWidth: 1,
-                }}
-              />
-
-              {eightPos(0, 0, w, h).map(({ x, y }, k) => (
-                <circle
-                  key={k}
-                  cx={x}
-                  cy={y}
-                  r={Point_Radius}
+              {isMulti ? (
+                <rect
+                  x={0}
+                  y={0}
+                  width={w}
+                  height={h}
                   style={{
-                    fill: "blue",
-                    fillOpacity: theItem && theItem.id === item.id ? 0.5 : 0,
+                    fill: "green",
+                    fillOpacity: arrMulti.includes(item.id) ? 0.1 : 0,
+                    stroke: arrMulti.includes(item.id) ? "green" : "none",
+                    strokeWidth: 1,
                   }}
                 />
-              ))}
+              ) : (
+                <rect
+                  x={0}
+                  y={0}
+                  width={w}
+                  height={h}
+                  style={{
+                    fill: "blue",
+                    fillOpacity: theItem && theItem.id === item.id ? 0.1 : 0,
+                    stroke: theItem && theItem.id === item.id ? "blue" : "none",
+                    strokeWidth: 1,
+                  }}
+                />
+              )}
+              {!isMulti &&
+                eightPos(0, 0, w, h).map(({ x, y }, k) => (
+                  <circle
+                    key={k}
+                    cx={x}
+                    cy={y}
+                    r={Point_Radius}
+                    style={{
+                      fill: "blue",
+                      fillOpacity: theItem && theItem.id === item.id ? 0.5 : 0,
+                    }}
+                  />
+                ))}
             </g>
           );
         })}

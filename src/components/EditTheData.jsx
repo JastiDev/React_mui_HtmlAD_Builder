@@ -4,8 +4,14 @@ import { TextField } from "@material-ui/core";
 import { px2num } from "../common";
 import FontPicker from "font-picker-react";
 import * as common from "../common";
+import { AlignButton } from "./AlignButton";
 
-export const EditTheData = ({ theData, handleChangeTheData, handleSave }) => {
+export const EditTheData = ({
+  theData,
+  handleChangeTheData,
+  // handleSave,
+  handleSetIsMulti,
+}) => {
   const [dpiX, setDpiX] = useState(96);
   const [dpiY, setDpiY] = useState(96);
 
@@ -114,6 +120,8 @@ export const EditTheData = ({ theData, handleChangeTheData, handleSave }) => {
           changeHeight(e.target.value * dpiY);
         }}
       />
+
+      <AlignButton alignType={1} handleClick={handleSetIsMulti} />
 
       <div style={{ display: "none" }}>
         <FontPicker apiKey={common.MY_GOOGLE_API_KEY} limit={500} />

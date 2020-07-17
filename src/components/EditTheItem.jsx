@@ -144,7 +144,21 @@ export const EditTheItem = ({
   //     onChange={(e) => changeStyle(strkey, e.target.value)}
   //   />
   // );
-
+  const MyInputNumber = (strkey) => (
+    <TextField
+      label={strkey}
+      id={strkey}
+      type="number"
+      variant="outlined"
+      size="small"
+      InputLabelProps={{
+        shrink: true,
+      }}
+      style={{ width: "120px", margin: "10px 10px" }}
+      value={Number(theItem.style[strkey])}
+      onChange={(e) => changeStyle(strkey, e.target.value)}
+    />
+  );
   const MyInputPixel = (strkey) => (
     <TextField
       label={strkey + "(px)"}
@@ -299,6 +313,7 @@ export const EditTheItem = ({
       {MyInputPixel("lineHeight")}
 
       <hr />
+      {MyInputNumber("zIndex")}
       {MyInputPercentW("width")}
       {MyInputPercentH("height")}
       {MyInputPercentW("left")}

@@ -21,6 +21,7 @@ import {
   redoTheData,
   theData,
 } from "./funcs/TheHistory";
+import { AlignMulti } from "./components/AlignMulti";
 
 const SERVER_INIT = 0;
 const SERVER_LOADING = 1;
@@ -42,6 +43,9 @@ export default function Main() {
   const [isImgPick, setIsImgPick] = useState(false);
 
   const [isBusyPdf, setIsBusyPdf] = useState(false);
+
+  const [arrMulti, setArrMulti] = useState([]);
+  const [isMulti, setIsMulti] = useState(false);
 
   const onDidMount = () => {
     loadAppData();
@@ -296,7 +300,59 @@ export default function Main() {
   };
 
   const handleSelectItem = (id) => {
+    if (isMulti) {
+      setIsMulti(false);
+      setArrMulti([]);
+    }
     setIdTheItem(id);
+  };
+
+  const handleMultiSelectItem = (id) => {
+    if (!isMulti) {
+      setIsMulti(true);
+      setIdTheItem(null);
+    }
+
+    if (!arrMulti.includes(id)) {
+      setArrMulti((arr) => [...arr, id]);
+    } else {
+      setArrMulti((arr) => {
+        let k = arr.findIndex((v) => v === id);
+        if (k !== -1) {
+          let newArr = [...arr.slice(0, k), ...arr.slice(k + 1, arr.length)];
+          return newArr;
+        }
+        return arr;
+      });
+    }
+  };
+
+  const handleAlignMulti = (alignType) => {
+    arrMulti.forEach((id) => {
+      let item = JSON.parse(JSON.stringify(theData.arrItem[id]));
+
+      if (alignType === 0) {
+        item.style.left = "0px";
+      } else if (alignType === 1) {
+        item.style.left =
+          (theData.width - common.px2num(item.style.width)) / 2 + "px";
+      } else if (alignType === 2) {
+        item.style.left =
+          theData.width - common.px2num(item.style.width) + "px";
+      } else if (alignType === 3) {
+        item.style.top = "0px";
+      } else if (alignType === 4) {
+        item.style.top =
+          (theData.height - common.px2num(item.style.height)) / 2 + "px";
+      } else if (alignType === 5) {
+        item.style.top =
+          theData.height - common.px2num(item.style.height) + "px";
+      }
+
+      theData.arrItem[id] = item;
+    });
+    setRefresh((refresh) => -refresh);
+    saveTheData();
   };
 
   const StatusView = (status) => {
@@ -339,6 +395,10 @@ export default function Main() {
                 theData={theData}
                 handleChangeTheData={handleTryData}
                 handleSave={handleSave}
+                handleSetIsMulti={() => {
+                  setIsMulti(true);
+                  setIdTheItem(null);
+                }}
               />
               <div>
                 <MyItemList
@@ -370,6 +430,7 @@ export default function Main() {
                 handlePickImg={(tf) => setIsImgPick(tf)}
               />
             )}
+            {isMulti && <AlignMulti handleAlignMulti={handleAlignMulti} />}
           </div>
         </div>
 
@@ -404,6 +465,9 @@ export default function Main() {
               handleChangeTheItem={handleChangeTheItem}
               idTheItem={idTheItem}
               handleSelectItem={handleSelectItem}
+              handleMultiSelectItem={handleMultiSelectItem}
+              isMulti={isMulti}
+              arrMulti={arrMulti}
             />
           </div>
         </div>
