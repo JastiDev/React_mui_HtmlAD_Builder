@@ -119,14 +119,19 @@ export const parseImportedHtmlToJson = (text) => {
 
 export const makeExportHtml = (theData) => {
   let strFontLink = "";
-  let strStyleSheet = "";
+  let strStyleSheet =
+    "<style type='text/css'>p {margin:0px 0px;}</style>" +
+    "<style type='text/css'>.dont-break-out {overflow-wrap: break-word; word-wrap: break-word;" +
+    "-ms-word-break: break-all; word-break: break-all; word-break: break-word;" +
+    "-ms-hyphens: auto; -moz-hyphens: auto; -webkit-hyphens: auto; hyphens: auto;}</style>";
+
   theData.arrItem.forEach((item) => {
     if (item.style["useCustomFont"]) {
       let url = item.style["customFontURL"];
       let family = url2family(url);
 
       strStyleSheet += `
-        <style tyle="text/css">
+        <style type="text/css">
         @font-face {
           font-family: '${family}';
           src: url('${url}');

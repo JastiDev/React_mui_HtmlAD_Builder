@@ -9,7 +9,7 @@ import {
 import CancelIcon from "@material-ui/icons/Cancel";
 import { Autocomplete } from "@material-ui/lab";
 
-import * as common from "../common";
+import * as common from "../funcs/common";
 import { MyS3Uploader } from "./MyS3Uploader";
 
 export const MyImagePicker = ({

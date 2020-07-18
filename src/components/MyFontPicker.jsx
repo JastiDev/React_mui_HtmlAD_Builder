@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import FontPicker from "font-picker-react";
 import {
   TextField,
@@ -14,7 +14,7 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import CancelIcon from "@material-ui/icons/Cancel";
 
-import * as common from "../common";
+import * as common from "../funcs/common";
 import { MyS3Uploader } from "./MyS3Uploader";
 
 export const MyFontPicker = ({
@@ -25,6 +25,22 @@ export const MyFontPicker = ({
   arrS3Font,
   handleUploadS3,
 }) => {
+  const [arrCustom, setArrCustom] = useState([]);
+
+  const url2filename = (url) => {
+    let arr = url.split("/");
+    let filename = arr[arr.length - 1];
+    return filename;
+  };
+  const initArrCustom = () => {
+    arrS3Font.forEach((url) => {
+      arrCustom.push({ url, filename: url2filename(url) });
+    });
+    setArrCustom(arrCustom);
+  };
+
+  useEffect(initArrCustom, [arrS3Font]);
+
   const changeStyle = (strkey, value) => {
     if (!theItem) return;
     let tmp = JSON.parse(JSON.stringify(theItem));
@@ -59,6 +75,10 @@ export const MyFontPicker = ({
       console.log(err);
     }
   };
+
+  if (theItem) {
+    console.log("theItem.style.fontFamily", theItem.style.fontFamily);
+  }
 
   return (
     <Dialog
@@ -134,8 +154,8 @@ export const MyFontPicker = ({
               <div style={{ height: "200px" }}>
                 <Autocomplete
                   size="small"
-                  options={arrS3Font}
-                  getOptionLabel={(option) => option}
+                  options={arrCustom}
+                  getOptionLabel={(option) => option.filename}
                   disableClearable
                   autoHighlight
                   renderInput={(params) => (
@@ -148,7 +168,7 @@ export const MyFontPicker = ({
                   )}
                   defaultValue={theItem.style["fontFamily"]}
                   onChange={(e, value) => {
-                    changeStyle("customFontURL", value);
+                    changeStyle("customFontURL", value.url);
                   }}
                   style={{ marginTop: "20px", display: "inline-block" }}
                   fullWidth

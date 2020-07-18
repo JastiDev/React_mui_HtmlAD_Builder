@@ -5,7 +5,7 @@ import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import CloseIcon from "@material-ui/icons/Close";
 
 import { MyCanvas } from "./MyCanvas";
-import * as common from "../common";
+import * as common from "../funcs/common";
 
 export const MyTemplateTile = ({
   arrTemplate,

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { Paper, CircularProgress } from "@material-ui/core";
 
-import * as common from "./common";
+import * as common from "./funcs/common";
 import * as http from "./http";
 
 import { MyTopBar } from "./components/MyTopBar";

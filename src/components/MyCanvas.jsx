@@ -1,5 +1,5 @@
-import React from "react";
-import { px2num } from "../common";
+import React, { useEffect } from "react";
+import { px2num } from "../funcs/common";
 
 let holding = -1;
 let lastDownPos = { x: 0, y: 0 };
@@ -20,6 +20,25 @@ export const MyCanvas = ({
     idTheItem !== null && arrItem.length > idTheItem
       ? arrItem[idTheItem]
       : null;
+
+  let ttt = null;
+  if (theItem) ttt = theItem.text;
+
+  const onTextOverflow = () => {
+    if (ttt && theItem) {
+      let el = document.getElementById(theItem.idStr);
+      if (el.clientHeight < el.scrollHeight) {
+        // alert("overflow!");
+
+        let newItem = JSON.parse(JSON.stringify(theItem));
+        newItem.style.height = el.scrollHeight + "px";
+
+        handleChangeTheItem(newItem, true);
+      }
+    }
+  };
+
+  useEffect(onTextOverflow, [ttt]);
 
   const topLevelId = (arrId) => {
     let maxZ = 0;
@@ -233,6 +252,7 @@ export const MyCanvas = ({
               key={item.id}
               id={item.idStr}
               style={item.style}
+              className="dont-break-out"
               dangerouslySetInnerHTML={{ __html: item.text }}
             ></div>
           ))}

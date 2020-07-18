@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { TextField } from "@material-ui/core";
 
-import { px2num } from "../common";
+import { px2num } from "../funcs/common";
 import FontPicker from "font-picker-react";
-import * as common from "../common";
+import * as common from "../funcs/common";
 import { AlignButton } from "./AlignButton";
 
 export const EditTheData = ({

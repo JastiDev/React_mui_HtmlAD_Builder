@@ -13,6 +13,7 @@ export const MyInnerHtmlEditor = ({ strHtml, handleChange }) => {
       theme="snow"
       value={strHtml}
       readOnly={false}
+      modules={{ toolbar: ["bold", "italic", "underline", "strike"] }}
       onChange={onEditorChange}
       onChangeSelection={() => {}}
       onFocus={() => {}}
