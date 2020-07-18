@@ -57,11 +57,11 @@ export default function Main() {
 
   const onCtrlZY = (e) => {
     // var evtobj = window.event ? window.event : e;
-    if (e.keyCode === 90 && e.ctrlKey) {
+    if (e.keyCode === 90 && (e.ctrlKey || e.metaKey)) {
       undoTheData();
       setIdTheItem(null);
       setRefresh((refresh) => -refresh);
-    } else if (e.keyCode === 89 && e.ctrlKey) {
+    } else if (e.keyCode === 89 && (e.ctrlKey || e.metaKey)) {
       redoTheData();
       setIdTheItem(null);
       setRefresh((refresh) => -refresh);
