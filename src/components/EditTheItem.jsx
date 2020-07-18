@@ -16,6 +16,7 @@ import PaletteIcon from "@material-ui/icons/Palette";
 import CancelIcon from "@material-ui/icons/Cancel";
 
 import { px2num, url2family } from "../common";
+import { MyInnerHtmlEditor } from "./MyInnerHtmlEditor";
 
 export const EditTheItem = ({
   width,
@@ -76,6 +77,7 @@ export const EditTheItem = ({
   };
 
   const changeText = (text) => {
+    console.log(text);
     let tmp = JSON.parse(JSON.stringify(theItem));
     tmp.text = text;
     handleChange(tmp);
@@ -277,17 +279,14 @@ export const EditTheItem = ({
           value={theItem.idStr || ""}
           onChange={(e) => changeIdStr(e.target.value)}
         />
+      </div>
 
-        <TextField
-          size="small"
-          label="text"
-          variant="outlined"
-          InputLabelProps={{
-            shrink: true,
+      <div style={{ padding: "10px" }}>
+        <MyInnerHtmlEditor
+          strHtml={theItem.text || ""}
+          handleChange={(text) => {
+            changeText(text);
           }}
-          style={{ flex: 1, margin: "10px 10px" }}
-          value={theItem.text || ""}
-          onChange={(e) => changeText(e.target.value)}
         />
       </div>
 

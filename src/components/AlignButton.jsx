@@ -22,7 +22,7 @@ const icons = [
 export const AlignButton = ({ alignType, handleClick }) => {
   return (
     <IconButton classes={{ root: classes.iconRoot }} onClick={handleClick}>
-      <img className={classes.imageIcon} src={icons[alignType]} />
+      <img className={classes.imageIcon} src={icons[alignType]} alt="icon" />
     </IconButton>
   );
 };

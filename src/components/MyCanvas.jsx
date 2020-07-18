@@ -229,9 +229,12 @@ export const MyCanvas = ({
           }}
         >
           {arrItem.map((item, i) => (
-            <div key={item.id} id={item.idStr} style={item.style}>
-              {item.text}
-            </div>
+            <div
+              key={item.id}
+              id={item.idStr}
+              style={item.style}
+              dangerouslySetInnerHTML={{ __html: item.text }}
+            ></div>
           ))}
         </div>
       </div>
