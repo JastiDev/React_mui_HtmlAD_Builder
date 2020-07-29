@@ -4,8 +4,10 @@ import "react-quill/dist/quill.snow.css";
 
 export const MyInnerHtmlEditor = ({ strHtml, handleChange }) => {
   const onEditorChange = (value, delta, source, editor) => {
-    let str = editor.getHTML();
-    handleChange(str);
+    if (source === "user") {
+      let str = editor.getHTML();
+      handleChange(str);
+    }
   };
 
   return (
